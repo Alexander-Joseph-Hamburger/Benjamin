@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+ <title>Interactive Cemetery Map â€“ [Cemetery Name]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    header { background: #2c3e50; color: white; padding: 20px; text-align: center; }
+    nav { background: #34495e; padding: 10px; text-align: center; }
+    nav a { color: white; margin: 0 15px; text-decoration: none; }
+    .container { padding: 20px; }
+    .map-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+    .section-box { width: 120px; height: 80px; background: #ecf0f1; border: 1px solid #bdc3c7; text-align: center; line-height: 80px; cursor: pointer; }
+    .legend, .directions { margin-top: 30px; }
+    .legend ul { list-style: none; padding: 0; }
+    .legend li { margin-bottom: 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      margin-bottom: 20px;
+    }
+
+    .buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .map-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .map {
+     display: grid;
+     grid-template-columns: auto 60px auto; /* West, Road, East */
+     grid-template-rows: repeat(20, 40px);  /* 20 rows of 40px height */
+     gap: 5px;
+}
+
+    .section-column {
+      display: grid;
+      grid-template-rows: repeat(20, 40px);
+      gap: 5px;
+    }
+
+    .section {
+      background: #e0e0e0;
+      border: 1px solid #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      width: 320px; /* Adjust this value as needed */
+      }
+
+.road-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px; /* Adjust width as needed */
+}
+
+.road {
+  background: #bbb;
+  border: 2px solid #999;
+  padding: 10px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.office {
+  grid-row: span 3;
+  background: #d4e4ff;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+    .north-arrow {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cemetery Map</h1>
+
+  <div class="buttons">
+    <button>Find A Loved One</button>
+    <button>Events</button>
+    <button>Get Directions</button>
+  </div>
+
+  <div class="map-container">
+    <div class="map">
+      <!-- West Side Sections -->
+      <div class="section-column">
+        <!-- A1 to A20 -->
+        <div class="section office" style="grid-row: span 3;">Office</div>
+        <div class="section">A4</div>
+        <div class="section">A5</div>
+        <div class="section">A6</div>
+        <div class="section">A7</div>
+        <div class="section">A8</div>
+        <div class="section">A9</div>
+        <div class="section">A10</div>
+        <div class="section">A11</div>
+        <div class="section">A12</div>
+        <div class="section">A13</div>
+        <div class="section">A14</div>
+        <div class="section">A15</div>
+        <div class="section">A16</div>
+        <div class="section">A17</div>
+        <div class="section">A18</div>
+        <div class="section">A19</div>
+        <div class="section">A20</div>
+      </div>
+
+      <!-- Road -->
+      <div class="road" style="grid-row: span 20;">DriveWay</div>
+
+      <!-- East Side Sections -->
+      <div class="section-column">
+        <!-- B1 to B20 -->
+        <div class="section">B1</div>
+        <div class="section">C</div>
+        <div class="section">D</div>
+        <div class="section">D</div>
+        <div class="section">E</div>
+        <div class="section">F</div>
+        <div class="section">teamsters</div>
+        <div class="section">Rosedale</div>
+        <div class="section">Casa Blanca</div>
+        <div class="section">B10</div>
+        <div class="section">B11</div>
+        <div class="section">B12</div>
+        <div class="section">B13</div>
+        <div class="section">B14</div>
+        <div class="section">B15</div>
+        <div class="section">B16</div>
+        <div class="section">B17</div>
+        <div class="section">B18</div>
+        <div class="section">B19</div>
+        <div class="section">B20</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="north-arrow">↑ North</div>
+
+</body>
+</html>
