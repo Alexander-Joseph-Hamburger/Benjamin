@@ -2,171 +2,432 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
- <title>Interactive Cemetery Map â€“ [Cemetery Name]</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cemetery Map Editor</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-    header { background: #2c3e50; color: white; padding: 20px; text-align: center; }
-    nav { background: #34495e; padding: 10px; text-align: center; }
-    nav a { color: white; margin: 0 15px; text-decoration: none; }
-    .container { padding: 20px; }
-    .map-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
-    .section-box { width: 120px; height: 80px; background: #ecf0f1; border: 1px solid #bdc3c7; text-align: center; line-height: 80px; cursor: pointer; }
-    .legend, .directions { margin-top: 30px; }
-    .legend ul { list-style: none; padding: 0; }
-    .legend li { margin-bottom: 5px; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      text-align: center;
+      font-family: sans-serif;
+      margin: 0;
       padding: 20px;
+      background: #f0f0f0;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 1px;
+      margin-bottom: 10px;
     }
 
-    .buttons {
-      margin-bottom: 20px;
-    }
-
-    .buttons button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    .map-container {
+    .container {
       display: flex;
       justify-content: center;
-      margin-top: 30px;
+      align-items: flex-start;
+      gap: 30px;
+      flex-wrap: nowrap;
     }
 
-    .map {
-     display: grid;
-     grid-template-columns: auto 60px auto; /* West, Road, East */
-     grid-template-rows: repeat(20, 40px);  /* 20 rows of 40px height */
-     gap: 5px;
-}
+    .grid-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-    .section-column {
+    .column-labels {
+      margin-left: 40px;
+    }
+
+    .col-labels {
       display: grid;
-      grid-template-rows: repeat(20, 40px);
-      gap: 5px;
+      grid-template-columns: repeat(16, 3vw);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .row-and-grid {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .row-labels {
+      display: grid;
+      grid-template-rows: repeat(40, 2vh);
+      font-size: 12px;
+      text-align: right;
+      padding-right: 5px;
+      width: 35px;
+      gap: 1px;
+    }
+
+    .section:empty::after {
+       content: "(unnamed)";
+       color: #999;
+       font-style: italic;
+       font-size: 12px;
+     }
+
+
+    .cemetery-grid {
+      display: grid;
+      grid-template-columns: repeat(16, 3vw);
+      grid-template-rows: repeat(40, 2vh);
+      gap: 1px;
+      background-color: #ccc;
+      border: 2px solid #333;
+      flex-shrink: 0;
     }
 
     .section {
-      background: #e0e0e0;
-      border: 1px solid #999;
+      background-color: #fff;
+      border: 2px solid #333;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      width: 320px; /* Adjust this value as needed */
+      cursor: pointer;
+    }
+
+    .section.selected {
+      background-color: #e0ffe0;
+      border-color: #007700;
+    }
+
+    #editor {
+      background: #fff;
+      border: 2px solid #333;
+      padding: 15px;
+      width: 280px;
+      min-width: 250px;
+      flex-shrink: 0;
+    }
+
+    #editor h3 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1000px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
       }
 
-.road-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 30px; /* Adjust width as needed */
-}
+      .cemetery-grid {
+        grid-template-columns: repeat(16, 4vw);
+        grid-template-rows: repeat(, 4vh);
+        width: 90vw;
+        height: 60vh;
+      }
 
-.road {
-  background: #bbb;
-  border: 2px solid #999;
-  padding: 10px;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-weight: bold;
-  font-size: 1.2em;
-  text-align: center;
-}
-
-.office {
-  grid-row: span 3;
-  background: #d4e4ff;
-  font-size: 1.1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-    .north-arrow {
-      margin-top: 10px;
-      font-size: 1.2em;
+      #editor {
+        width: 90vw;
+        margin-top: 20px;
+      }
     }
+
+.cemetery-road {
+  writing-mode: vertical-rl;
+  text-align: center;
+  font-weight: bold;
+  background-color: #8b6f47; /* muted brown */
+  color: #f5f5dc;            /* light beige text */
+  border-left: 1px solid #5c4422;
+  border-right: 1px solid #5c4422;
+  padding: 4px;
+}
+
+
   </style>
 </head>
 <body>
-
-  <h1>Cemetery Map</h1>
-
-  <div class="buttons">
-    <button>Find A Loved One</button>
-    <button>Events</button>
-    <button>Get Directions</button>
-  </div>
-
-  <div class="map-container">
-    <div class="map">
-      <!-- West Side Sections -->
-      <div class="section-column">
-        <!-- A1 to A20 -->
-        <div class="section office" style="grid-row: span 3;">Office</div>
-        <div class="section">A4</div>
-        <div class="section">A5</div>
-        <div class="section">A6</div>
-        <div class="section">A7</div>
-        <div class="section">A8</div>
-        <div class="section">A9</div>
-        <div class="section">A10</div>
-        <div class="section">A11</div>
-        <div class="section">A12</div>
-        <div class="section">A13</div>
-        <div class="section">A14</div>
-        <div class="section">A15</div>
-        <div class="section">A16</div>
-        <div class="section">A17</div>
-        <div class="section">A18</div>
-        <div class="section">A19</div>
-        <div class="section">A20</div>
+  <h1>Cemetery Map Editor</h1>
+  <div class="container">
+    <div class="grid-wrapper">
+      <div class="column-labels">
+        <div class="col-labels" id="colLabels"></div>
       </div>
+      <div class="row-and-grid">
+        <div class="row-labels" id="rowLabels"></div>
+        <div class="cemetery-grid" id="cemeteryGrid">
+          <div class="section" id="sectionA" style="grid-column: 1 / 6; grid-row: 1 / 4;">Section A</div>
+          <div class="section" id="sectionB" style="grid-column: 6 / 11; grid-row: 1 / 4;">Section B</div>
+         <div class="section cemetery-road" style="grid-column: 11 / 12; grid-row: 1 / 41;">
+Cemetery Road </div>
 
-      <!-- Road -->
-      <div class="road" style="grid-row: span 20;">DriveWay</div>
-
-      <!-- East Side Sections -->
-      <div class="section-column">
-        <!-- B1 to B20 -->
-        <div class="section">B1</div>
-        <div class="section">C</div>
-        <div class="section">D</div>
-        <div class="section">D</div>
-        <div class="section">E</div>
-        <div class="section">F</div>
-        <div class="section">teamsters</div>
-        <div class="section">Rosedale</div>
-        <div class="section">Casa Blanca</div>
-        <div class="section">B10</div>
-        <div class="section">B11</div>
-        <div class="section">B12</div>
-        <div class="section">B13</div>
-        <div class="section">B14</div>
-        <div class="section">B15</div>
-        <div class="section">B16</div>
-        <div class="section">B17</div>
-        <div class="section">B18</div>
-        <div class="section">B19</div>
-        <div class="section">B20</div>
+        </div>
       </div>
+    </div>
+
+    <div id="editor">
+      <h3>Edit Section</h3>
+      <label>Section Name: <input type="text" id="sectionName"></label>
+      <label>Grid Column Start: <input type="number" id="colStart" min="1" max="16"></label>
+      <label>Grid Column End: <input type="number" id="colEnd" min="1" max="21"></label>
+      <label>Grid Row Start: <input type="number" id="rowStart" min="1" max="40"></label>
+      <label>Grid Row End: <input type="number" id="rowEnd" min="1" max="41"></label>
+      <button onclick="createNewSection()">Add</button>
+      <button onclick="applyChanges()">Modify</button>
+      <button onclick="inquireSection()">Inquire</button>
+      <button onclick="deleteSection()">Delete</button>
+
     </div>
   </div>
 
-  <div class="north-arrow">↑ North</div>
+<script>
+  // Generate column labels
+  const colLabels = document.getElementById('colLabels');
+  for (let i = 1; i <= 20; i++) {
+    const label = document.createElement('div');
+    label.textContent = i;
+    colLabels.appendChild(label);
+  }
 
-</body>
-</html>
+  // Generate row labels
+  const rowLabels = document.getElementById('rowLabels');
+  for (let i = 1; i <= 40; i++) {
+    const label = document.createElement('div');
+    label.textContent = i;
+    rowLabels.appendChild(label);
+  }
+
+  let selectedSection = null;
+
+  function attachClickHandler(section) {
+    section.addEventListener('click', () => {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+      section.classList.add('selected');
+      selectedSection = section;
+
+      document.getElementById('sectionName').value = section.dataset.name || section.textContent.trim();
+      document.getElementById('colStart').value = section.dataset.colStart || '';
+      document.getElementById('colEnd').value = section.dataset.colEnd || '';
+      document.getElementById('rowStart').value = section.dataset.rowStart || '';
+      document.getElementById('rowEnd').value = section.dataset.rowEnd || '';
+    });
+  }
+
+  // Attach to existing sections
+  document.querySelectorAll('.section').forEach(section => {
+    // Add dataset values based on initial style
+    const style = window.getComputedStyle(section);
+    section.dataset.name = section.textContent.trim();
+    const [colStart, colEnd] = style.gridColumn.split('/').map(s => s.trim());
+    const [rowStart, rowEnd] = style.gridRow.split('/').map(s => s.trim());
+
+    section.dataset.colStart = colStart;
+    section.dataset.colEnd = colEnd;
+    section.dataset.rowStart = rowStart;
+    section.dataset.rowEnd = rowEnd;
+
+    attachClickHandler(section);
+  });
+
+function applyChanges() {
+  if (!selectedSection) {
+    alert("No section selected.");
+    return;
+  }
+
+  const name = document.getElementById('sectionName').value.trim();
+  const colStart = parseInt(document.getElementById('colStart').value);
+  const colEnd = parseInt(document.getElementById('colEnd').value);
+  const rowStart = parseInt(document.getElementById('rowStart').value);
+  const rowEnd = parseInt(document.getElementById('rowEnd').value);
+
+  const maxCols = 21;
+  const maxRows = 41;
+
+  if (
+    isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
+    colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
+    rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
+  ) {
+    alert("Invalid grid position. Please stay within 1–for columns and 1–40 for rows.");
+    return;
+  }
+
+  selectedSection.textContent = name;
+  selectedSection.style.gridColumn = `${colStart} / ${colEnd}`;
+  selectedSection.style.gridRow = `${rowStart} / ${rowEnd}`;
+  selectedSection.dataset.name = name;
+  selectedSection.dataset.colStart = colStart;
+  selectedSection.dataset.colEnd = colEnd;
+  selectedSection.dataset.rowStart = rowStart;
+  selectedSection.dataset.rowEnd = rowEnd;
+}
+
+function findFirstAdaptiveBlock(maxWidth, maxHeight) {
+  const occupied = new Set();
+
+  document.querySelectorAll('.section').forEach(section => {
+    const [startCol, endCol] = section.style.gridColumn.split('/').map(Number);
+    const [startRow, endRow] = section.style.gridRow.split('/').map(Number);
+
+    for (let r = startRow; r < endRow; r++) {
+      for (let c = startCol; c < endCol; c++) {
+        occupied.add(`${r},${c}`);
+      }
+    }
+  });
+
+  // Try all sizes from maxWidth × maxHeight down to 1×1
+for (let c = 1; c <= 16; c++) { // column-first
+  for (let r = 1; r <= 40; r++) { // top to bottom
+    for (let h = maxHeight; h >= 1; h--) { // try tall blocks first
+      for (let w = maxWidth; w >= 1; w--) { // try wide blocks last
+        if (r + h - 1 > 40 || c + w - 1 > 16) continue; // skip if out of bounds
+        let fits = true;
+        for (let dr = 0; dr < h; dr++) {
+          for (let dc = 0; dc < w; dc++) {
+            if (occupied.has(`${r + dr},${c + dc}`)) {
+              fits = false;
+              break;
+            }
+          }
+          if (!fits) break;
+        }
+
+        if (fits) {
+          return {
+            rowStart: r,
+            rowEnd: r + h,
+            colStart: c,
+            colEnd: c + w
+          };
+        }
+      }
+    }
+  }
+}
+
+
+  return null;
+}
+
+function inquireSection() {
+  alert("Inquire feature not implemented yet.");
+}
+
+
+  function createNewSection() {
+    let name = document.getElementById('sectionName').value.trim();
+    // Leave blank if not provided
+
+    let colStart = parseInt(document.getElementById('colStart').value);
+    let colEnd = parseInt(document.getElementById('colEnd').value);
+    let rowStart = parseInt(document.getElementById('rowStart').value);
+    let rowEnd = parseInt(document.getElementById('rowEnd').value);
+
+    if (
+      isNaN(colStart) || isNaN(colEnd) ||
+      isNaN(rowStart) || isNaN(rowEnd)
+    ) {
+      const open = findFirstAdaptiveBlock(5, 2);
+      if (!open) {
+        alert("No available space to place a new section.");
+        return;
+      }
+      colStart = open.colStart;
+      colEnd = open.colEnd;
+      rowStart = open.rowStart;
+      rowEnd = open.rowEnd;
+      console.log("Placed section at:", { colStart, colEnd, rowStart, rowEnd });
+    }
+
+    const maxCols = 21;
+    const maxRows = 41;
+
+    console.log("Trying to place section at:", {
+      colStart, colEnd, rowStart, rowEnd
+    });
+
+
+    if (
+      isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
+      colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
+      rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
+    ) {
+    alert("Invalid grid position. Please stay within 1–16 for columns and 1–40 for rows.");
+    return;
+    }
+
+    const newSection = document.createElement('div');
+    newSection.className = 'section';
+    newSection.textContent = name;
+    newSection.style.gridColumn = `${colStart} / ${colEnd}`;
+    newSection.style.gridRow = `${rowStart} / ${rowEnd}`;
+    newSection.dataset.name = name;
+    newSection.dataset.colStart = colStart;
+    newSection.dataset.colEnd = colEnd;
+    newSection.dataset.rowStart = rowStart;
+    newSection.dataset.rowEnd = rowEnd;
+
+    attachClickHandler(newSection);
+    document.querySelector('.cemetery-grid').appendChild(newSection);
+
+    selectedSection = null;
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+    document.getElementById('sectionName').value = '';
+    document.getElementById('colStart').value = '';
+    document.getElementById('colEnd').value = '';
+    document.getElementById('rowStart').value = '';
+    document.getElementById('rowEnd').value = '';
+  }
+
+function deleteSection() {
+  if (!selectedSection) {
+    alert("No section selected to delete.");
+    return;
+  }
+
+  // Remove from DOM
+  selectedSection.remove();
+
+  // Clear selection and editor
+  selectedSection = null;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+  document.getElementById('sectionName').value = '';
+  document.getElementById('colStart').value = '';
+  document.getElementById('colEnd').value = '';
+  document.getElementById('rowStart').value = '';
+  document.getElementById('rowEnd').value = '';
+}
+
+
+document.querySelectorAll('.section').forEach(section => {
+  const style = window.getComputedStyle(section);
+
+  // Extract grid values from computed style
+  section.dataset.name = section.textContent.trim();
+  section.dataset.colStart = style.gridColumnStart;
+  section.dataset.colEnd = style.gridColumnEnd;
+  section.dataset.rowStart = style.gridRowStart;
+  section.dataset.rowEnd = style.gridRowEnd;
+
+  // Attach click behavior
+  attachClickHandler(section);
+});
+
+</script>
