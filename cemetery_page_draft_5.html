@@ -1,433 +1,687 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cemetery Map Editor</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <title>Cemetery Map Editor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f0f0f0;
-      overflow: hidden;
-    }
-
-    h1 {
-      font-size: 1.2rem;
-      text-align: center;
-      margin-top: 1px;
-      margin-bottom: 10px;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 30px;
-      flex-wrap: nowrap;
-    }
-
-    .grid-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .column-labels {
-      margin-left: 40px;
-    }
-
-    .col-labels {
-      display: grid;
-      grid-template-columns: repeat(16, 3vw);
-      font-size: 12px;
-      text-align: center;
-    }
-
-    .row-and-grid {
-      display: flex;
-      align-items: stretch;
-    }
-
-    .row-labels {
-      display: grid;
-      grid-template-rows: repeat(40, 2vh);
-      font-size: 12px;
-      text-align: right;
-      padding-right: 5px;
-      width: 35px;
-      gap: 1px;
-    }
-
-    .section:empty::after {
-       content: "(unnamed)";
-       color: #999;
-       font-style: italic;
-       font-size: 12px;
-     }
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            padding: 0px 20px; /* top & bottom = 1px, left & right = 20px */
+            background: #f0f0f0;
+            overflow: hidden;
+        }
 
 
-    .cemetery-grid {
-      display: grid;
-      grid-template-columns: repeat(16, 3vw);
-      grid-template-rows: repeat(40, 2vh);
-      gap: 1px;
-      background-color: #ccc;
-      border: 2px solid #333;
-      flex-shrink: 0;
-    }
+        h1 {
+            height: 3vh;
+            line-height: 3vh;
+            margin: 0;
+            padding: 0;
+            font-size: 0.8rem;
+            text-align: center;
+            box-sizing: border-box;
+        }
 
-    .section {
-      background-color: #fff;
-      border: 2px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: nowrap;
+        }
 
-    .section.selected {
-      background-color: #e0ffe0;
-      border-color: #007700;
-    }
+        .grid-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
-    #editor {
-      background: #fff;
-      border: 2px solid #333;
-      padding: 15px;
-      width: 280px;
-      min-width: 250px;
-      flex-shrink: 0;
-    }
+        .column-labels {
+            margin-left: 40px;
+        }
 
-    #editor h3 {
-      margin-top: 0;
-    }
+        .col-labels {
+            display: grid;
+            grid-template-columns: repeat(16, 3vw);
+            font-size: 10px;
+            text-align: center;
+            color: darkolivegreen;
+        }
 
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
+        .row-and-grid {
+            display: flex;
+            align-items: stretch;
+        }
 
-    input {
-      width: 100%;
-      padding: 5px;
-      font-size: 14px;
-    }
+        .row-labels {
+            display: grid;
+            grid-template-rows: repeat(47, 2vh); /* or your current row count */
+            font-size: 10px; /* slightly smaller than before */
+            text-align: right;
+            padding-right: 5px;
+            width: 35px;
+            row-gap: 0px;
+            column-gap: 1px;
+            color: darkolivegreen; /* light blue text */
+        }
 
-    button {
-      margin-top: 15px;
-      padding: 8px 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+        .section:empty::after {
+            content: "(unnamed)";
+            color: #999;
+            font-style: italic;
+            font-size: 12px;
+        }
 
-    @media (max-width: 1000px) {
-      .container {
-        flex-direction: column;
-        align-items: center;
-      }
+        /* Base layout for larger screens */
+        .cemetery-grid {
+            margin-top: 0;
+            padding_top: 0;
+            display: grid;
+            grid-template-columns: repeat(16, 3vw);
+            grid-template-rows: repeat(47, 2vh);
+            row-gap: 0px;
+            column-gap: 1px;
+            background-color: #ccc;
+            border: 1px solid green;
+            flex-shrink: 0;
+        }
+        .section {
+            background-color: #fff;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: normal; /* Removes bold */
+            cursor: pointer;
+        }
 
-      .cemetery-grid {
-        grid-template-columns: repeat(16, 4vw);
-        grid-template-rows: repeat(, 4vh);
-        width: 90vw;
-        height: 60vh;
-      }
+            .section.selected {
+                background-color: #e0ffe0;
+                border-color: #007700;
+            }
 
-      #editor {
-        width: 90vw;
-        margin-top: 20px;
-      }
-    }
+        #editor {
+            background: #fff;
+            border: 1px solid #333;
+            padding: 15px;
+            width: 280px;
+            min-width: 250px;
+            flex-shrink: 0;
+        }
 
-.cemetery-road {
-  writing-mode: vertical-rl;
-  text-align: center;
-  font-weight: bold;
-  background-color: #8b6f47; /* muted brown */
-  color: #f5f5dc;            /* light beige text */
-  border-left: 1px solid #5c4422;
-  border-right: 1px solid #5c4422;
-  padding: 4px;
-}
+            #editor h3 {
+                margin-top: 0;
+            }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
 
 
-  </style>
+            #editor {
+                width: 90vw;
+                margin-top: 20px;
+            }
+        }
+
+        .cemetery-road {
+            writing-mode: vertical-rl;
+            text-align: center;
+            font-weight: bold;
+            background-color: #8b6f47; /* muted brown */
+            color: #f5f5dc; /* light beige text */
+            border-left: 1px solid #5c4422;
+            border-right: 1px solid #5c4422;
+            padding: 4px;
+        }
+    </style>
+    <style>
+        .sn-label {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 0.8vw;
+            background-color: rgba(255, 255, 255, 0.75);
+            padding: 0.2vw 0.5vw;
+            border-radius: 0.3vw;
+            color: darkslategray;
+            pointer-events: none;
+        }
+    </style>
+    <style>
+        .compass-rose {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border: 2px solid darkolivegreen;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            color: darkolivegreen;
+            background-color: #f9f9f9;
+        }
+
+        .compass-rose {
+            top: 2vw;
+            right: 2vw;
+            width: 6vw;
+            height: 6vw;
+            border: 0.3vw solid darkolivegreen;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            color: darkolivegreen;
+            background-color: #f9f9f9;
+        }
+
+
+
+
+        .direction {
+            position: absolute;
+            font-size: 2vh;
+        }
+
+        .south {
+            top: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2vw;
+            font-weight: bold;
+            color: #8B0000; /* Deep red */
+        }
+
+        .north {
+            bottom: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .east {
+            top: 50%;
+            right: 1px;
+            transform: translateY(-50%);
+        }
+
+        .west {
+            top: 50%;
+            left: 1px;
+            transform: translateY(-50%);
+        }
+
+        .arrow-up {
+            position: absolute;
+            top: 2vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8vw;
+            height: 8vh;
+        }
+
+        .arrow-icon {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
 </head>
 <body>
-  <h1>Cemetery Map Editor</h1>
-  <div class="container">
-    <div class="grid-wrapper">
-      <div class="column-labels">
-        <div class="col-labels" id="colLabels"></div>
-      </div>
-      <div class="row-and-grid">
-        <div class="row-labels" id="rowLabels"></div>
-        <div class="cemetery-grid" id="cemeteryGrid">
-          <div class="section" id="sectionA" style="grid-column: 1 / 6; grid-row: 1 / 4;">Section A</div>
-          <div class="section" id="sectionB" style="grid-column: 6 / 11; grid-row: 1 / 4;">Section B</div>
-         <div class="section cemetery-road" style="grid-column: 11 / 12; grid-row: 1 / 41;">
-Cemetery Road </div>
+    <h1>Cemetery Map Editor</h1>
+    <div class="container">
+        <div class="grid-wrapper">
+            <div class="row-and-grid">
+                <div class="row-labels" id="rowLabels"></div>
+                <div class="cemetery-grid" id="cemeteryGrid">
+                    <div class="section" id="sectionA" style="grid-column: 1 / 6; grid-row: 1 / 4;">Section A</div>
+                    <div class="section" id="sectionB" style="grid-column: 6 / 11; grid-row: 1 / 4;">Section B</div>
+                    <div class="section cemetery-road" style="grid-column: 11 / 12; grid-row: 1 / 48;">
 
+                        Cemetery Road
+                    </div>
+
+                </div>
+            </div>
+            <div class="column-labels">
+                <div class="col-labels" id="colLabels"></div>
+            </div>
         </div>
-      </div>
+
+        <div id="editor">
+            <h3>Edit Section</h3>
+            <label>Section Name: <input type="text" id="sectionName"></label>
+            <label>Grid Column Start: <input type="number" id="colStart" min="1" max="16"></label>
+            <label>Grid Column End: <input type="number" id="colEnd" min="1" max="21"></label>
+            <label>Grid Row Start: <input type="number" id="rowStart" min="1" max="47"></label>
+            <label>Grid Row End: <input type="number" id="rowEnd" min="1" max="47"></label>
+            <button onclick="createNewSection()">Add</button>
+            <button onclick="applyChanges()">Modify</button>
+            <button onclick="inquireSection()">Inquire</button>
+            <button onclick="deleteSection()">Delete</button>
+            <button onclick="downloadJsonFile()">Save Cemetery Map</button>
+            <button onclick="document.getElementById('chooseFile').click()">📂 Load Cemetery Map</button>
+            <input type="file" id="chooseFile" accept=".json" style="display: none;" onchange="loadCemeteryData(this.files[0])">
+        </div>
+    </div>
+    <div class="compass-rose">
+        <div class="arrow-up">
+            <svg viewBox="0 0 100 100" class="arrow-icon">
+                <!-- Stem: from bottom to mid -->
+                <line x1="50" y1="90" x2="50" y2="40" stroke="darkolivegreen" stroke-width="6" />
+                <!-- Arrowhead: below the S -->
+                <polygon points="40,40 60,40 50,25" fill="darkolivegreen" />
+            </svg>
+        </div>
+        <div class="direction south">S</div>
+        <div class="direction east">E</div>
+        <div class="direction west">W</div>
     </div>
 
-    <div id="editor">
-      <h3>Edit Section</h3>
-      <label>Section Name: <input type="text" id="sectionName"></label>
-      <label>Grid Column Start: <input type="number" id="colStart" min="1" max="16"></label>
-      <label>Grid Column End: <input type="number" id="colEnd" min="1" max="21"></label>
-      <label>Grid Row Start: <input type="number" id="rowStart" min="1" max="40"></label>
-      <label>Grid Row End: <input type="number" id="rowEnd" min="1" max="41"></label>
-      <button onclick="createNewSection()">Add</button>
-      <button onclick="applyChanges()">Modify</button>
-      <button onclick="inquireSection()">Inquire</button>
-      <button onclick="deleteSection()">Delete</button>
+    <script>
+        // Generate column labels
+        const colLabels = document.getElementById('colLabels');
+        for (let i = 1; i <= 16; i++) {
+            const label = document.createElement('div');
+            label.textContent = i;
+            colLabels.appendChild(label);
+        }
 
-    </div>
-  </div>
+        // Generate row labels
+        const rowLabels = document.getElementById('rowLabels');
+        rowLabels.innerHTML = '';
 
-<script>
-  // Generate column labels
-  const colLabels = document.getElementById('colLabels');
-  for (let i = 1; i <= 20; i++) {
-    const label = document.createElement('div');
-    label.textContent = i;
-    colLabels.appendChild(label);
-  }
+        for (let i = 1; i <= 47; i++) {
+            const label = document.createElement('div');
+            label.textContent = i % 2 === 1 ? i : ''; // Only show odd numbers
+            rowLabels.appendChild(label);
+        }
 
-  // Generate row labels
-  const rowLabels = document.getElementById('rowLabels');
-  for (let i = 1; i <= 40; i++) {
-    const label = document.createElement('div');
-    label.textContent = i;
-    rowLabels.appendChild(label);
-  }
+        let selectedSection = null;
+        let hasUnsavedChanges = false;
 
-  let selectedSection = null;
+        function attachClickHandler(section) {
+            section.addEventListener('click', () => {
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+                section.classList.add('selected');
+                selectedSection = section;
 
-  function attachClickHandler(section) {
-    section.addEventListener('click', () => {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
-      section.classList.add('selected');
-      selectedSection = section;
+                document.getElementById('sectionName').value = section.dataset.name || section.textContent.trim();
+                document.getElementById('colStart').value = section.dataset.colStart || '';
+                document.getElementById('colEnd').value = section.dataset.colEnd || '';
+                document.getElementById('rowStart').value = section.dataset.rowStart || '';
+                document.getElementById('rowEnd').value = section.dataset.rowEnd || '';
+            });
+        }
 
-      document.getElementById('sectionName').value = section.dataset.name || section.textContent.trim();
-      document.getElementById('colStart').value = section.dataset.colStart || '';
-      document.getElementById('colEnd').value = section.dataset.colEnd || '';
-      document.getElementById('rowStart').value = section.dataset.rowStart || '';
-      document.getElementById('rowEnd').value = section.dataset.rowEnd || '';
-    });
-  }
+        // Attach to existing sections
+        document.querySelectorAll('.section').forEach(section => {
+            // Add dataset values based on initial style
+            const style = window.getComputedStyle(section);
+            section.dataset.name = section.textContent.trim();
+            const [colStart, colEnd] = style.gridColumn.split('/').map(s => s.trim());
+            const [rowStart, rowEnd] = style.gridRow.split('/').map(s => s.trim());
 
-  // Attach to existing sections
-  document.querySelectorAll('.section').forEach(section => {
-    // Add dataset values based on initial style
-    const style = window.getComputedStyle(section);
-    section.dataset.name = section.textContent.trim();
-    const [colStart, colEnd] = style.gridColumn.split('/').map(s => s.trim());
-    const [rowStart, rowEnd] = style.gridRow.split('/').map(s => s.trim());
+            section.dataset.colStart = colStart;
+            section.dataset.colEnd = colEnd;
+            section.dataset.rowStart = rowStart;
+            section.dataset.rowEnd = rowEnd;
 
-    section.dataset.colStart = colStart;
-    section.dataset.colEnd = colEnd;
-    section.dataset.rowStart = rowStart;
-    section.dataset.rowEnd = rowEnd;
+            attachClickHandler(section);
+        });
 
-    attachClickHandler(section);
-  });
-
-function applyChanges() {
-  if (!selectedSection) {
-    alert("No section selected.");
-    return;
-  }
-
-  const name = document.getElementById('sectionName').value.trim();
-  const colStart = parseInt(document.getElementById('colStart').value);
-  const colEnd = parseInt(document.getElementById('colEnd').value);
-  const rowStart = parseInt(document.getElementById('rowStart').value);
-  const rowEnd = parseInt(document.getElementById('rowEnd').value);
-
-  const maxCols = 21;
-  const maxRows = 41;
-
-  if (
-    isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
-    colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
-    rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
-  ) {
-    alert("Invalid grid position. Please stay within 1–for columns and 1–40 for rows.");
-    return;
-  }
-
-  selectedSection.textContent = name;
-  selectedSection.style.gridColumn = `${colStart} / ${colEnd}`;
-  selectedSection.style.gridRow = `${rowStart} / ${rowEnd}`;
-  selectedSection.dataset.name = name;
-  selectedSection.dataset.colStart = colStart;
-  selectedSection.dataset.colEnd = colEnd;
-  selectedSection.dataset.rowStart = rowStart;
-  selectedSection.dataset.rowEnd = rowEnd;
-}
-
-function findFirstAdaptiveBlock(maxWidth, maxHeight) {
-  const occupied = new Set();
-
-  document.querySelectorAll('.section').forEach(section => {
-    const [startCol, endCol] = section.style.gridColumn.split('/').map(Number);
-    const [startRow, endRow] = section.style.gridRow.split('/').map(Number);
-
-    for (let r = startRow; r < endRow; r++) {
-      for (let c = startCol; c < endCol; c++) {
-        occupied.add(`${r},${c}`);
-      }
-    }
-  });
-
-  // Try all sizes from maxWidth × maxHeight down to 1×1
-for (let c = 1; c <= 16; c++) { // column-first
-  for (let r = 1; r <= 40; r++) { // top to bottom
-    for (let h = maxHeight; h >= 1; h--) { // try tall blocks first
-      for (let w = maxWidth; w >= 1; w--) { // try wide blocks last
-        if (r + h - 1 > 40 || c + w - 1 > 16) continue; // skip if out of bounds
-        let fits = true;
-        for (let dr = 0; dr < h; dr++) {
-          for (let dc = 0; dc < w; dc++) {
-            if (occupied.has(`${r + dr},${c + dc}`)) {
-              fits = false;
-              break;
+        function applyChanges() {
+            if (!selectedSection) {
+                alert("No section selected.");
+                return;
             }
-          }
-          if (!fits) break;
+
+            const name = document.getElementById('sectionName').value.trim();
+            const colStart = parseInt(document.getElementById('colStart').value);
+            const colEnd = parseInt(document.getElementById('colEnd').value);
+            const rowStart = parseInt(document.getElementById('rowStart').value);
+            const rowEnd = parseInt(document.getElementById('rowEnd').value);
+
+            const maxCols = 21;
+            const maxRows = 49;
+
+            if (
+                isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
+                colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
+                rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
+            ) {
+                alert("Invalid grid position. Please stay within 1–for columns and 1–49 for rows.");
+                return;
+            }
+
+            selectedSection.textContent = name;
+            selectedSection.style.gridColumn = `${colStart} / ${colEnd}`;
+            selectedSection.style.gridRow = `${rowStart} / ${rowEnd}`;
+            selectedSection.dataset.name = name;
+            selectedSection.dataset.colStart = colStart;
+            selectedSection.dataset.colEnd = colEnd;
+            selectedSection.dataset.rowStart = rowStart;
+            selectedSection.dataset.rowEnd = rowEnd;
+            // Mark as unsaved
+            hasUnsavedChanges = true;
+            return;
         }
 
-        if (fits) {
-          return {
-            rowStart: r,
-            rowEnd: r + h,
-            colStart: c,
-            colEnd: c + w
-          };
+        function findFirstAdaptiveBlock(maxWidth, maxHeight) {
+            const occupied = new Set();
+
+            document.querySelectorAll('.section').forEach(section => {
+                const [startCol, endCol] = section.style.gridColumn.split('/').map(Number);
+                const [startRow, endRow] = section.style.gridRow.split('/').map(Number);
+
+                for (let r = startRow; r < endRow; r++) {
+                    for (let c = startCol; c < endCol; c++) {
+                        occupied.add(`${r},${c}`);
+                    }
+                }
+            });
+
+            // Try all sizes from maxWidth × maxHeight down to 1×1
+            for (let c = 1; c <= 16; c++) { // column-first
+                for (let r = 1; r <= 47; r++) { // top to bottom
+                    for (let h = maxHeight; h >= 1; h--) { // try tall blocks first
+                        for (let w = maxWidth; w >= 1; w--) { // try wide blocks last
+                            if (r + h - 1 > 47 || c + w - 1 > 16) continue; // skip if out of bounds
+                            let fits = true;
+                            for (let dr = 0; dr < h; dr++) {
+                                for (let dc = 0; dc < w; dc++) {
+                                    if (occupied.has(`${r + dr},${c + dc}`)) {
+                                        fits = false;
+                                        break;
+                                    }
+                                }
+                                if (!fits) break;
+                            }
+
+                            if (fits) {
+                                return {
+                                    rowStart: r,
+                                    rowEnd: r + h,
+                                    colStart: c,
+                                    colEnd: c + w
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            return null;
         }
-      }
-    }
-  }
-}
+
+        function inquireSection() {
+            alert("Inquire feature not implemented yet.");
+        }
 
 
-  return null;
-}
+        function createNewSection() {
+            let name = document.getElementById('sectionName').value.trim();
+            // Leave blank if not provided
 
-function inquireSection() {
-  alert("Inquire feature not implemented yet.");
-}
+            let colStart = parseInt(document.getElementById('colStart').value);
+            let colEnd = parseInt(document.getElementById('colEnd').value);
+            let rowStart = parseInt(document.getElementById('rowStart').value);
+            let rowEnd = parseInt(document.getElementById('rowEnd').value);
 
+            if (
+                isNaN(colStart) || isNaN(colEnd) ||
+                isNaN(rowStart) || isNaN(rowEnd)
+            ) {
+                const open = findFirstAdaptiveBlock(5, 2);
+                if (!open) {
+                    alert("No available space to place a new section.");
+                    return;
+                }
+                colStart = open.colStart;
+                colEnd = open.colEnd;
+                rowStart = open.rowStart;
+                rowEnd = open.rowEnd;
+                console.log("Placed section at:", { colStart, colEnd, rowStart, rowEnd });
+            }
 
-  function createNewSection() {
-    let name = document.getElementById('sectionName').value.trim();
-    // Leave blank if not provided
+            const maxCols = 21;
+            const maxRows = 49;
 
-    let colStart = parseInt(document.getElementById('colStart').value);
-    let colEnd = parseInt(document.getElementById('colEnd').value);
-    let rowStart = parseInt(document.getElementById('rowStart').value);
-    let rowEnd = parseInt(document.getElementById('rowEnd').value);
-
-    if (
-      isNaN(colStart) || isNaN(colEnd) ||
-      isNaN(rowStart) || isNaN(rowEnd)
-    ) {
-      const open = findFirstAdaptiveBlock(5, 2);
-      if (!open) {
-        alert("No available space to place a new section.");
-        return;
-      }
-      colStart = open.colStart;
-      colEnd = open.colEnd;
-      rowStart = open.rowStart;
-      rowEnd = open.rowEnd;
-      console.log("Placed section at:", { colStart, colEnd, rowStart, rowEnd });
-    }
-
-    const maxCols = 21;
-    const maxRows = 41;
-
-    console.log("Trying to place section at:", {
-      colStart, colEnd, rowStart, rowEnd
-    });
+            console.log("Trying to place section at:", {
+                colStart, colEnd, rowStart, rowEnd
+            });
 
 
-    if (
-      isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
-      colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
-      rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
-    ) {
-    alert("Invalid grid position. Please stay within 1–16 for columns and 1–40 for rows.");
-    return;
-    }
+            if (
+                isNaN(colStart) || isNaN(colEnd) || isNaN(rowStart) || isNaN(rowEnd) ||
+                colStart < 1 || colEnd > maxCols || colStart >= colEnd ||
+                rowStart < 1 || rowEnd > maxRows || rowStart >= rowEnd
+            ) {
+                alert("Invalid grid position. Please stay within 1–16 for columns and 1–49 for rows.");
+                return;
+            }
 
-    const newSection = document.createElement('div');
-    newSection.className = 'section';
-    newSection.textContent = name;
-    newSection.style.gridColumn = `${colStart} / ${colEnd}`;
-    newSection.style.gridRow = `${rowStart} / ${rowEnd}`;
-    newSection.dataset.name = name;
-    newSection.dataset.colStart = colStart;
-    newSection.dataset.colEnd = colEnd;
-    newSection.dataset.rowStart = rowStart;
-    newSection.dataset.rowEnd = rowEnd;
+            const newSection = document.createElement('div');
+            newSection.className = 'section';
+            newSection.textContent = name;
+            newSection.style.gridColumn = `${colStart} / ${colEnd}`;
+            newSection.style.gridRow = `${rowStart} / ${rowEnd}`;
+            newSection.dataset.name = name;
+            newSection.dataset.colStart = colStart;
+            newSection.dataset.colEnd = colEnd;
+            newSection.dataset.rowStart = rowStart;
+            newSection.dataset.rowEnd = rowEnd;
 
-    attachClickHandler(newSection);
-    document.querySelector('.cemetery-grid').appendChild(newSection);
+            attachClickHandler(newSection);
+            document.querySelector('.cemetery-grid').appendChild(newSection);
 
-    selectedSection = null;
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
-    document.getElementById('sectionName').value = '';
-    document.getElementById('colStart').value = '';
-    document.getElementById('colEnd').value = '';
-    document.getElementById('rowStart').value = '';
-    document.getElementById('rowEnd').value = '';
-  }
+            selectedSection = null;
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+            document.getElementById('sectionName').value = '';
+            document.getElementById('colStart').value = '';
+            document.getElementById('colEnd').value = '';
+            document.getElementById('rowStart').value = '';
+            document.getElementById('rowEnd').value = '';
+            hasUnsavedChanges = true;
+        }
 
-function deleteSection() {
-  if (!selectedSection) {
-    alert("No section selected to delete.");
-    return;
-  }
+        function getEditedSectionsData() {
+            const elements = document.querySelectorAll('.section, .road');
+            const data = [];
 
-  // Remove from DOM
-  selectedSection.remove();
+            elements.forEach(el => {
+                data.push({
+                    id: el.id || null,
+                    name: el.textContent.trim(), // captures label text
+                    style: el.getAttribute('style') || '', // captures inline styles
+                    class: el.className // helps distinguish roads from sections
+                });
+            });
 
-  // Clear selection and editor
-  selectedSection = null;
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
-  document.getElementById('sectionName').value = '';
-  document.getElementById('colStart').value = '';
-  document.getElementById('colEnd').value = '';
-  document.getElementById('rowStart').value = '';
-  document.getElementById('rowEnd').value = '';
-}
+            return JSON.stringify(data, null, 2);
+        }
+
+        function confirmBeforeLoad() {
+            if (hasUnsavedChanges) {
+                const proceed = confirm("You have unsaved changes. Do you want to continue?");
+                if (!proceed) return; // Stop if user cancels
+            }
+            // Now trigger the hidden file input
+            document.getElementById("fileInput").click();
+        }
 
 
-document.querySelectorAll('.section').forEach(section => {
-  const style = window.getComputedStyle(section);
+        function downloadJsonFile() {
+            const jsonData = getEditedSectionsData();
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
 
-  // Extract grid values from computed style
-  section.dataset.name = section.textContent.trim();
-  section.dataset.colStart = style.gridColumnStart;
-  section.dataset.colEnd = style.gridColumnEnd;
-  section.dataset.rowStart = style.gridRowStart;
-  section.dataset.rowEnd = style.gridRowEnd;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cemetery-map.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            hasUnsavedChanges = false;
+        }
 
-  // Attach click behavior
-  attachClickHandler(section);
-});
+        function loadCemeteryData(file) {
+            console.log("🔍 Load Cemetery Map button clicked");
+            console.log("📁 File selected:", file);
+            if (hasUnsavedChanges) {
+                const proceed = confirm("You have unsaved changes. Loading a new file will overwrite them. Continue?");
+                if (!proceed) {
+                    return; // cancel file load
+                }
+            }
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    console.log("✅ JSON parsed:", data);
 
-</script>
+                    if (!Array.isArray(data)) {
+                        throw new Error("JSON root is not an array");
+                    }
+                const grid = document.querySelector('.cemetery-grid');
+                grid.innerHTML = ''; // Clear existing content
+
+                data.forEach(item => {
+                    console.log("🧩 Rendering item:", item);
+
+                    const div = document.createElement('div');
+                    div.className = item.class || 'section';
+                    div.id = item.id || '';
+                    div.setAttribute('style', item.style);
+                    div.textContent = item.name;
+
+                    // ✅ Add this block to show "sn"
+                    if (item.sn) {
+                        const snLabel = document.createElement('div');
+                        snLabel.className = 'sn-label';
+                        snLabel.textContent = item.sn;
+                        div.appendChild(snLabel);
+                    }
+
+                    // ✅ Extract grid values from style and set dataset
+                    const style = div.style;
+                    const [colStart, colEnd] = style.gridColumn.split('/').map(s => s.trim());
+                    const [rowStart, rowEnd] = style.gridRow.split('/').map(s => s.trim());
+
+                    div.dataset.name = item.name;
+                    div.dataset.colStart = colStart;
+                    div.dataset.colEnd = colEnd;
+                    div.dataset.rowStart = rowStart;
+                    div.dataset.rowEnd = rowEnd;
+
+                    attachClickHandler(div);
+                    grid.appendChild(div);
+                });
+                    document.querySelectorAll('.section').forEach(div => {
+                        const height = div.offsetHeight;
+                        const width = div.offsetWidth;
+
+                        const isCemeteryRoad = div.textContent.trim() === 'Cemetery Road';
+
+                        let fontSize;
+
+                        if (isCemeteryRoad) {
+                            // Scale based on horizontal width instead of height
+                            fontSize = Math.min(Math.max(12, width * 0.5), 20); // 50% of width, capped at 20px
+                        } else {
+                            // Regular scaling based on height
+                            fontSize = Math.min(Math.max(12, height * 0.16), 28); // 16% of height, capped at 28px
+                        }
+
+                        div.style.fontSize = `${fontSize}px`;
+                    });
+            } catch (error) {
+                console.error("❌ Failed to load map:", error);
+                alert("Error loading map: " + error.message);
+            }
+
+
+            };
+            reader.readAsText(file);
+        }
+
+        function deleteSection() {
+            if (!selectedSection) {
+                alert("No section selected to delete.");
+                return;
+            }
+
+            // Remove from DOM
+            selectedSection.remove();
+
+            // Clear selection and editor
+            selectedSection = null;
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
+            document.getElementById('sectionName').value = '';
+            document.getElementById('colStart').value = '';
+            document.getElementById('colEnd').value = '';
+            document.getElementById('rowStart').value = '';
+            document.getElementById('rowEnd').value = '';
+            hasUnsavedChanges = true;
+        }
+
+
+        document.querySelectorAll('.section').forEach(section => {
+            const style = window.getComputedStyle(section);
+
+            // Extract grid values from computed style
+            section.dataset.name = section.textContent.trim();
+            section.dataset.colStart = style.gridColumnStart;
+            section.dataset.colEnd = style.gridColumnEnd;
+            section.dataset.rowStart = style.gridRowStart;
+            section.dataset.rowEnd = style.gridRowEnd;
+
+            // Attach click behavior
+            attachClickHandler(section);
+        });
+
+    </script>
+    <script>
+        window.addEventListener("beforeunload", function (e) {
+            if (hasUnsavedChanges) {
+                const confirmationMessage = "You have unsaved changes. Do you want to leave without saving?";
+                e.preventDefault();
+                e.returnValue = confirmationMessage;
+                return confirmationMessage;
+            }
+        });
+    </script>
+
+</body>
+</html>
