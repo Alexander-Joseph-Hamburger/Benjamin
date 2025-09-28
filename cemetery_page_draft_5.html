@@ -38,7 +38,7 @@
             flex-shrink: 0;
         }
 
-         .column-labels {
+        .column-labels {
             margin-left: 40px;
         }
 
@@ -87,6 +87,7 @@
             border: 3px solid green;
             flex-shrink: 0;
         }
+
         .section {
             position: relative; /* Enables absolute positioning inside */
             background-color: #fcf9f3; /* ultra-pale earthy tone */
@@ -97,10 +98,12 @@
             font-weight: normal; /* Removes bold */
             cursor: pointer;
         }
+
             .section.selected {
                 background-color: #e0ffe0;
                 border-color: #007700;
             }
+
         .section-name:hover {
             color: #005bb5; /* Slightly darker blue than #007aff */
             font-weight: 600; /* Slightly bold, but not full bold */
@@ -133,6 +136,7 @@
             #editor h3 {
                 margin-top: 0;
             }
+
             #editor textarea {
                 font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
             }
@@ -153,6 +157,7 @@
             margin-top: 10px;
             font-size: 14px;
         }
+
         #editor label {
             display: flex;
             flex-direction: column;
@@ -196,6 +201,7 @@
 
             #editor {
                 width: 90vw;
+                max-width 250px;
                 margin-top: 20px;
             }
         }
@@ -223,6 +229,11 @@
                 border-bottom: 1px solid #ddd;
             }
 
+                #sectionList li.selected {
+                    background-color: #ffeeba;
+                    font-weight: bold;
+                }
+
         .section-number {
             flex-shrink: 0;
             width: 36px;
@@ -241,6 +252,7 @@
             text-indent: -36px; /* pulls first line back */
             padding-left: 36px; /* pushes all lines forward */
         }
+
         .cemetery-road {
             writing-mode: vertical-rl;
             text-align: center;
@@ -340,26 +352,26 @@
             height: 70vh;
             background: white;
             border: solid;
-        
             padding: 10px;
             overflow: hidden;
             z-index: 100;
             display: flex;
             flex-direction: column;
         }
-            #inquire-scroll-area {
+
+        #inquire-scroll-area {
             overflow-y: auto;
             flex-grow: 1;
             padding-right: 5px;
         }
 
-            #inquire-scroll-box h3 {
-                margin: 0 0 10px 0;
-                font-size: 16px;
-                text-align: center;
-            }
+        #inquire-scroll-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            text-align: center;
+        }
 
-           .inquire-item {
+        .inquire-item {
             padding: 5px;
             cursor: pointer;
         }
@@ -367,7 +379,6 @@
             .inquire-item:hover {
                 background-color: #f0f0f0;
             }
-
     </style>
 
 </head>
@@ -392,6 +403,11 @@
             </div>
         </div>
 
+        <div id="sectionListBox">
+            <h3>Section List</h3>
+            <ul id="sectionList"></ul>
+        </div>
+
         <div id="editor">
             <h3>Edit Section</h3>
             <label>
@@ -409,11 +425,7 @@
             <button onclick="document.getElementById('chooseFile').click()">📂 Load Cemetery Map</button>
             <input type="file" id="chooseFile" accept=".json" style="display: none;" onchange="loadCemeteryData(this.files[0])">
         </div>
-        <div id="sectionListBox">
-            <h3>Section List</h3>
-            <ul id="sectionList"></ul>
-        </div>
- 
+
         <div class="compass-rose">
             <div class="arrow-up">
                 <svg viewBox="0 0 100 100" class="arrow-icon">
@@ -452,17 +464,33 @@
 
             function attachClickHandler(section) {
                 section.addEventListener('click', () => {
-                    document.querySelectorAll('.section').forEach(s => s.classList.remove('selected'));
-                    section.classList.add('selected');
+                    // Clear previous highlights
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('selected', 'highlight'));
+                    document.querySelectorAll('#sectionList li').forEach(li => li.classList.remove('selected'));
+
+                    // Highlight the clicked section
+                    section.classList.add('selected', 'highlight');
                     selectedSection = section;
 
+                    // Populate Edit Section box
                     document.getElementById('sectionName').value = section.dataset.name || section.textContent.trim();
                     document.getElementById('colStart').value = section.dataset.colStart || '';
                     document.getElementById('colEnd').value = section.dataset.colEnd || '';
                     document.getElementById('rowStart').value = section.dataset.rowStart || '';
                     document.getElementById('rowEnd').value = section.dataset.rowEnd || '';
+
+                    // Highlight the matching list item
+                    const listItems = document.querySelectorAll('#sectionList li');
+                    listItems.forEach(li => {
+                        if (li.dataset.id === section.id) {
+                            li.classList.add('selected');
+                            li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
                 });
             }
+
+
 
             // Attach to existing sections
             document.querySelectorAll('.section').forEach(section => {
@@ -737,19 +765,35 @@
 
                             // Add the list of names for the section list box.
                             const li = document.createElement("li");
-                            li.innerHTML = `
-                                <span class="section-number">${item.sn || ''}</span>
-                                <span class="section-name-text">${item.name}</span>
-                                `;
+                            li.innerHTML = `<span class="section-number">${item.sn || ''}</span>
+                                         <span class="section-name-text">${item.name}</span>`;
                             li.dataset.id = item.id || '';
                             li.addEventListener("click", () => {
+                                // Clear previous highlights
+                                document.querySelectorAll(".section").forEach(s => s.classList.remove("selected", "highlight"));
+                                document.querySelectorAll("#sectionList li").forEach(li => li.classList.remove("selected"));
+
+                                // Highlight the clicked list item
+                                li.classList.add("selected");
+
+                                // Highlight the corresponding map section
                                 const target = document.getElementById(item.id);
                                 if (target) {
+                                    target.classList.add("selected", "highlight");
                                     target.scrollIntoView({ behavior: "smooth", block: "center" });
-                                    target.classList.add("highlight");
+
+                                    // Populate the Edit Section box
+                                    document.getElementById("sectionName").value = item.name || '';
+                                    document.getElementById("colStart").value = item.colStart || '';
+                                    document.getElementById("colEnd").value = item.colEnd || '';
+                                    document.getElementById("rowStart").value = item.rowStart || '';
+                                    document.getElementById("rowEnd").value = item.rowEnd || '';
+
+                                    selectedSection = target;
                                 }
                             });
-                            sectionList.appendChild(li);                        });
+                            sectionList.appendChild(li);
+                        });
                         document.querySelectorAll('.section').forEach(div => {
                             const height = div.offsetHeight;
                             const width = div.offsetWidth;
