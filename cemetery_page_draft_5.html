@@ -141,6 +141,12 @@
                 font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
             }
 
+        #editor,
+        #sectionListBox {
+            max-height: 85vh; /* or whatever height you're using */
+            overflow-y: auto;
+        }
+
         #sectionName {
             /* Only affects the Section Name textarea */
             font-family: "Segoe UI", Arial, sans-serif;
@@ -192,6 +198,20 @@
                 font-weight: bold;
             }
 
+        .icon-button {
+            background: none;
+            border: none;
+            font-size: 14px;
+            padding: 0;
+            margin-left: 4px;
+            cursor: pointer;
+            line-height: 1;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         @media (max-width: 1000px) {
             .container {
                 flex-direction: column;
@@ -207,15 +227,57 @@
         }
 
         #sectionListBox {
+            max-height: 85vh;
+            overflow-y: auto;
             border: 1px solid #ccc;
-            padding: 6px;
-            margin-top: 10px;
+        }
+
+        .section-list-header {
+            position: sticky;
+            top: 0;
             background-color: #fff;
-            border-radius: 6px;
+            z-index: 1;
+            padding: 8px;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .section-list-header h3 {
+                margin: 0;
+                font-size: 18px;
+            }
+        .section-list-button {
+            all: unset; /* resets inherited styles */
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: left;
+            gap: 0;
+            padding: 0;
+
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            white-space: nowrap;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0 0 0 6px;
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            overflow: hidden;
         }
 
         #sectionList {
-            max-height: 300px; /* controls scroll height */
+            max-height: 80%; /* controls scroll height */
             overflow-y: auto;
             list-style: none;
             padding: 0;
@@ -404,7 +466,10 @@
         </div>
 
         <div id="sectionListBox">
-            <h3>Section List</h3>
+            <div class="section-list-header">
+                <button class="section-list-button" onclick="document.getElementById('chooseFile').click()" title="Load Cemetery Map">📂</button>
+                <h3>Section List</h3>
+            </div>
             <ul id="sectionList"></ul>
         </div>
 
@@ -725,8 +790,7 @@
                 reader.onload = function (event) {
                     try {
                         const data = JSON.parse(event.target.result);
-                        data.sort((a, b) => a.name.localeCompare(b.name));
-
+                        const sortedForList = [...data].sort((a, b) => a.name.localeCompare(b.name));
                         if (!Array.isArray(data)) {
                             throw new Error("JSON root is not an array");
                         }
@@ -762,11 +826,13 @@
 
                             attachClickHandler(div);
                             grid.appendChild(div);
-
+                        });
+                        // ✅ Build Section List using sortedForList
+                        sortedForList.forEach(item => {
                             // Add the list of names for the section list box.
                             const li = document.createElement("li");
                             li.innerHTML = `<span class="section-number">${item.sn || ''}</span>
-                                         <span class="section-name-text">${item.name}</span>`;
+                                                    <span class="section-name-text">${item.name}</span>`;
                             li.dataset.id = item.id || '';
                             li.addEventListener("click", () => {
                                 // Clear previous highlights
