@@ -784,7 +784,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                hasUnsavedChanges = false;
+
             }
 
             function loadCemeteryData(file) {
@@ -888,6 +888,7 @@
 
                             div.style.fontSize = `${fontSize}px`;
                         });
+                        hasUnsavedChanges = false;
                     } catch (error) {
                         console.error("❌ Failed to load map:", error);
                         alert("Error loading map: " + error.message);
