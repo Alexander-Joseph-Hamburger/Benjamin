@@ -615,6 +615,16 @@
                 selectedSection.dataset.colEnd = colEnd;
                 selectedSection.dataset.rowStart = rowStart;
                 selectedSection.dataset.rowEnd = rowEnd;
+
+                // Update scroll list entry
+                const listItem = document.querySelector(`#sectionList li[data-id="${selectedSection.id}"]`);
+                if (listItem) {
+                    const nameSpan = listItem.querySelector(".section-name-text");
+                    if (nameSpan) {
+                        nameSpan.textContent = name;
+                    }
+                }
+
                 // Mark as unsaved
                 hasUnsavedChanges = true;
                 return;
