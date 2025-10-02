@@ -218,10 +218,6 @@
                 align-items: center;
             }
 
-        @media only screen and (max-width: 420px) {
-            #editor { display: none  !important; }
-        }
-
 
             #editor {
                 width: 30vw;
@@ -252,6 +248,7 @@
                 margin: 0;
                 font-size: 18px;
             }
+
         .section-list-button {
             all: unset; /* resets inherited styles */
             font-size: 12px;
@@ -260,7 +257,6 @@
             align-items: left;
             gap: 0;
             padding: 0;
-
             border-radius: 4px;
             background-color: #f9f9f9;
             white-space: nowrap;
@@ -341,6 +337,13 @@
             border-radius: 0.3vw;
             color: darkslategray;
             pointer-events: none;
+        }
+    </style>
+    <style>
+        @media only screen and (max-width: 420px) {
+            #editor {
+                display: none !important;
+            }
         }
     </style>
     <style>
@@ -846,7 +849,7 @@
                             // Add the list of names for the section list box.
                             const li = document.createElement("li");
                             li.innerHTML = `<span class="section-number">${item.sn || ''}</span>
-                                                    <span class="section-name-text">${item.name}</span>`;
+                                                            <span class="section-name-text">${item.name}</span>`;
                             li.dataset.id = item.id || '';
                             li.addEventListener("click", () => {
                                 // Clear previous highlights
