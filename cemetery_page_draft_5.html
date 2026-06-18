@@ -503,7 +503,7 @@
             <button onclick="deleteSection()">Delete</button>
             <button onclick="downloadJsonFile()">Save Cemetery Map</button>
             <button onclick="document.getElementById('chooseFile').click()">📂 Load Cemetery Map</button>
-            <input type="file" id="chooseFile" accept=".json" style="display: none;" onchange="loadCemeteryData(this.files[0])">
+            <input type="file" id="chooseFile" accept=".json" style="display: none;" onchange="loadCemeteryData()">
         </div>
 
         <div class="compass-rose">
@@ -802,7 +802,7 @@
 
             }
 
-            function loadCemeteryData(file) {
+            function loadCemeteryData() {
                 console.log("🔍 Load Cemetery Map button clicked");
                 console.log("📁 File selected:", file);
                 if (hasUnsavedChanges) {
@@ -811,6 +811,8 @@
                         return; // cancel file load
                     }
                 }
+
+             
                 fetch('cemetery-map-31.json')
                     .then(response => response.json())
                     .then(data => {
@@ -908,6 +910,8 @@
                         console.error("❌ Failed to load map:", error);
                         alert("Error loading map: " + error.message);
                     }
+    });
+}
 
 
             function deleteSection() {
