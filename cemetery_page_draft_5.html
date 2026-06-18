@@ -805,10 +805,10 @@
                         return; // cancel file load
                     }
                 }
-                const reader = new FileReader();
-                reader.onload = function (event) {
+                fetch('cemetery-map-31.json')
+                    .then(response => response.json())
+                    .then(data => {
                     try {
-                        const data = JSON.parse(event.target.result);
                         const sortedForList = [...data].sort((a, b) => a.name.localeCompare(b.name));
                         if (!Array.isArray(data)) {
                             throw new Error("JSON root is not an array");
@@ -905,8 +905,7 @@
 
 
                 };
-                reader.readAsText(file);
-            }
+                }
 
             function deleteSection() {
                 if (!selectedSection) {
