@@ -1,0 +1,373 @@
+[
+  {
+    "id": "0",
+    "name": "Cemetery Road",
+    "style": "grid-area: 1 / 11 / 48 / 12; font-size: 18.5px;",
+    "class": "section cemetery-road",
+    "sn": ""
+  },
+  {
+    "id": "1",
+    "name": "Chesed Shel Emeth (Federation, Congress)",
+    "style": "grid-area: 1 / 1 / 9 / 11; font-size: 15.84px;",
+    "class": "section",
+    "sn": "S"
+  },
+  {
+    "id": "2",
+    "name": "B'Nai Israel Beth David",
+    "style": "grid-area: 6 / 1 / 8 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "115"
+  },
+  {
+    "id": "3",
+    "name": "B'Nai Israel Beth David",
+    "style": "grid-area: 8 / 1 / 12 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "114"
+  },
+  {
+    "id": "4",
+    "name": "Sons of Jacob",
+    "style": "grid-area: 12 / 1 / 15 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "113"
+  },
+  {
+    "id": "5",
+    "name": "Agudath Israel",
+    "style": "grid-area: 15 / 1 / 17 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "112"
+  },
+  {
+    "id": "6",
+    "name": "United Jewish Peoples Order (UJPO)",
+    "style": "grid-area: 17 / 1 / 20 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "111"
+  },
+  {
+    "id": "7",
+    "name": "Zion Benevolent Society",
+    "style": "grid-area: 20 / 1 / 23 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "110"
+  },
+  {
+    "id": "8",
+    "name": "Radomer Mutual Benefit Society",
+    "style": "grid-area: 23 / 1 / 25 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "109"
+  },
+  {
+    "id": "9",
+    "name": "Hebrew Sick Benefit Society (Chmelnicker)",
+    "style": "grid-area: 25 / 1 / 28 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "108"
+  },
+  {
+    "id": "10",
+    "name": "Zion Benevolent Society",
+    "style": "grid-area: 28 / 1 / 31 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "110"
+  },
+  {
+    "id": "11",
+    "name": "Eastern Children of Israel (Berkeley St. Synagogue)",
+    "style": "grid-area: 31 / 1 / 33 / 6; font-size: 12px;",
+    "class": "section selected highlight",
+    "sn": "106"
+  },
+  {
+    "id": "12",
+    "name": "Keltzer Sick Benefit Society",
+    "style": "grid-area: 33 / 1 / 36 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "105"
+  },
+  {
+    "id": "13",
+    "name": "Anshei New York",
+    "style": "grid-area: 36 / 1 / 39 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "104"
+  },
+  {
+    "id": "14",
+    "name": "Anshei Shidlov",
+    "style": "grid-area: 39 / 1 / 41 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "103"
+  },
+  {
+    "id": "15",
+    "name": "Beth Hamidrash (Old McCaul)",
+    "style": "grid-area: 41 / 1 / 46 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "102"
+  },
+  {
+    "id": "16",
+    "name": "Beth Hamidrash (New McCaul)",
+    "style": "grid-area: 46 / 1 / 49 / 6; font-size: 12px;",
+    "class": "section",
+    "sn": "101"
+  },
+  {
+    "id": "17",
+    "name": "Radomer Mutual Benefit Society",
+    "style": "grid-area: 9 / 6 / 12 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "R"
+  },
+  {
+    "id": "18",
+    "name": "Kehilla Jacob",
+    "style": "grid-area: 12 / 6 / 14 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "Q"
+  },
+  {
+    "id": "19",
+    "name": "Anshei Drilitz",
+    "style": "grid-area: 14 / 6 / 16 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "P"
+  },
+  {
+    "id": "20",
+    "name": "Beitzachiner",
+    "style": "grid-area: 16 / 6 / 18 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "O"
+  },
+  {
+    "id": "21",
+    "name": "Court Ahavas Achem (Foresters)",
+    "style": "grid-area: 18 / 6 / 20 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "N"
+  },
+  {
+    "id": "22",
+    "name": "Anshei Slipia",
+    "style": "grid-area: 20 / 6 / 22 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "M"
+  },
+  {
+    "id": "23",
+    "name": "Anshei Apter",
+    "style": "grid-area: 22 / 6 / 24 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "L"
+  },
+  {
+    "id": "24",
+    "name": "Anshei Keltz",
+    "style": "grid-area: 24 / 6 / 26 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "K"
+  },
+  {
+    "id": "25",
+    "name": "Anshei Keltz",
+    "style": "grid-area: 26 / 6 / 28 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "J"
+  },
+  {
+    "id": "26",
+    "name": "First Nariever",
+    "style": "grid-area: 28 / 6 / 30 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "I"
+  },
+  {
+    "id": "27",
+    "name": "Anshei Kiev",
+    "style": "grid-area: 30 / 6 / 32 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "H"
+  },
+  {
+    "id": "28",
+    "name": "Canadian Hebrew Benevolent",
+    "style": "grid-area: 32 / 6 / 34 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "G"
+  },
+  {
+    "id": "29",
+    "name": "Anshei Stashov",
+    "style": "grid-area: 34 / 6 / 36 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "F"
+  },
+  {
+    "id": "30",
+    "name": "Farband",
+    "style": "grid-area: 36 / 6 / 38 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "E"
+  },
+  {
+    "id": "31",
+    "name": "Toronto Hebrew Benevolent Society",
+    "style": "grid-area: 38 / 6 / 40 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "D"
+  },
+  {
+    "id": "32",
+    "name": "Linitzer Sick Benefit Society",
+    "style": "grid-area: 40 / 6 / 43 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "C"
+  },
+  {
+    "id": "33",
+    "name": "Chenstechover",
+    "style": "grid-area: 43 / 6 / 46 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "B"
+  },
+  {
+    "id": "34",
+    "name": "Goel Tzedec",
+    "style": "grid-area: 46 / 6 / 49 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": "A"
+  },
+  {
+    "id": "35",
+    "name": "Dump",
+    "style": "grid-area: 1 / 8 / 4 / 11; font-size: 12px;",
+    "class": "section",
+    "sn": ""
+  },
+  {
+    "id": "36",
+    "name": "Toronto Hebrew Benevelent Society",
+    "style": "grid-area: 1 / 12 / 3 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "1"
+  },
+  {
+    "id": "37",
+    "name": "Sons of Jacob",
+    "style": "grid-area: 3 / 12 / 6 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "2 South"
+  },
+  {
+    "id": "38",
+    "name": "Lubliner",
+    "style": "grid-area: 6 / 12 / 8 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "2 North"
+  },
+  {
+    "id": "39",
+    "name": "Anshei Driltz",
+    "style": "grid-area: 8 / 12 / 12 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "3"
+  },
+  {
+    "id": "40",
+    "name": "B'Nai Israel",
+    "style": "grid-area: 12 / 12 / 14 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "4 South"
+  },
+  {
+    "id": "41",
+    "name": "Court Ahavas Achem (Foresters)",
+    "style": "grid-area: 14 / 12 / 17 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "5"
+  },
+  {
+    "id": "42",
+    "name": "Anshei Slipia",
+    "style": "grid-area: 17 / 12 / 20 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "6 South"
+  },
+  {
+    "id": "43",
+    "name": "Beth Tzedec",
+    "style": "grid-area: 20 / 12 / 23 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "6 North"
+  },
+  {
+    "id": "44",
+    "name": "Beth Tzedec",
+    "style": "grid-area: 23 / 12 / 26 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "7"
+  },
+  {
+    "id": "45",
+    "name": "Temple Sinai",
+    "style": "grid-area: 26 / 12 / 29 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "8"
+  },
+  {
+    "id": "46",
+    "name": "Temple Sinai",
+    "style": "grid-area: 29 / 12 / 32 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "9"
+  },
+  {
+    "id": "47",
+    "name": "Beth Tzedec",
+    "style": "grid-area: 32 / 12 / 35 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "10 South"
+  },
+  {
+    "id": "48",
+    "name": "Temple Emanu El",
+    "style": "grid-area: 35 / 12 / 38 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "10 North"
+  },
+  {
+    "id": "49",
+    "name": "Beth Emeth",
+    "style": "grid-area: 38 / 12 / 41 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "11"
+  },
+  {
+    "id": "50",
+    "name": "Beth Tzedec",
+    "style": "grid-area: 41 / 12 / 44 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "12"
+  },
+  {
+    "id": "51",
+    "name": "Beth Tzedec",
+    "style": "grid-area: 44 / 12 / 46 / 17; font-size: 12px;",
+    "class": "section",
+    "sn": "12A"
+  },
+  {
+    "id": "52",
+    "name": "Main Building",
+    "style": "grid-area: 46 / 12 / 49 / 15; font-size: 12px;",
+    "class": "section",
+    "sn": ""
+  }
+]
