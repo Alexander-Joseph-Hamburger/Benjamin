@@ -476,12 +476,18 @@
 
         <div id="sectionListBox">
             <div class="section-list-header">
-                <button class="section-list-button" onclick="document.getElementById('chooseFile').click()" title="Load Cemetery Map">📂</button>
+
+            <button class="section-list-button"
+                onclick="loadCemeteryData()"
+                title="Reload Cemetery Map">🔄</button>
+
                 <h3>Section List</h3>
             </div>
             <ul id="sectionList"></ul>
         </div>
 
+
+        
         <div id="editor">
             <h3>Edit Section</h3>
             <label>
